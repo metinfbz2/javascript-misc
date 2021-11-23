@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Random color example — event handler attribute</title>
+  <style>
+    button {
+      margin: 10px
+    }
+
+    ;
+  </style>
+</head>
+
+<body>
+  <style>
+    .warning {
+      border: 2px solid #f39389;
+      border-radius: 2px;
+      padding: 10px;
+      position: absolute;
+      background-color: #fbd8d4;
+      color: #3b3c40;
+    }
+  </style>
+
+  <div class="container">
+    <p>Please enter your name using lowercase letters only.</p>
+
+    <form>
+      <input type="text" id="my-textbox">
+    </form>
+  </div>
+  <script>
+
+
+    var myTextbox = document.getElementById('my-textbox');
+    myTextbox.addEventListener('keypress', checkName, false);
+
+    function checkName(evt) {
+      var charCode = evt.charCode;
+      //console.log(evt.charCode);
+      if (charCode != 0) {
+        if (charCode < 97 || charCode > 122) {
+          evt.preventDefault();
+          displayWarning(
+            "Please use lowercase letters only."
+            + "\n" + "charCode: " + charCode + "\n"
+          );
+        }
+      }
+    }
+
+    var warningTimeout;
+    var warningBox = document.createElement("div");
+    warningBox.className = "warning";
+
+    function displayWarning(msg) {
+      warningBox.innerHTML = msg;
+
+      if (document.body.contains(warningBox)) {
+        window.clearTimeout(warningTimeout);
+      } else {
+        // insert warningBox after myTextbox
+        myTextbox.parentNode.insertBefore(warningBox, myTextbox.nextSibling);
+      }
+
+      warningTimeout = window.setTimeout(function () {
+        warningBox.parentNode.removeChild(warningBox);
+        warningTimeout = -1;
+      }, 2000);
+    }
+
+
+
+
+
+    const module = {
+      x: 42,
+      getX: function () {
+        return this.x;
+      }
+    };
+
+    const unboundGetX = module.getX;
+    console.log(unboundGetX()); // The function gets invoked at the global scope
+    // expected output: undefined
+
+    const boundGetX = unboundGetX.bind(module);
+    console.log(boundGetX());
+    // expected output: 42
+
+
+  </script>
+</body>
+
+</html>
